@@ -1,4 +1,4 @@
-# onionchat
+# barrow
 
 Anonymous, end-to-end-encrypted group chat over SSH, hosted behind a Tor onion
 service. No signup. Your identity is a single ed25519 keypair — the same one
@@ -6,7 +6,7 @@ that authenticates you also encrypts your messages. The server relays and
 stores only ciphertext; it cannot read anything.
 
 ```
-you ──ed25519 SSH auth──▶ onion service ──▶ onionchat server (stores ciphertext)
+you ──ed25519 SSH auth──▶ onion service ──▶ barrow server (stores ciphertext)
         (TOFU, no signup)                     routes envelopes by recipient id
 message body: E2EE (SecretBox + per-recipient SealedBox + ed25519 signature)
 ```
@@ -43,20 +43,20 @@ pip install pynacl asyncssh python-socks PySocks
    python server.py --host 127.0.0.1 --port 8022
    ```
 
-   It creates `ssh_host_ed25519_key` (stable host key) and `onionchat.db` on
+   It creates `ssh_host_ed25519_key` (stable host key) and `barrow.db` on
    first run.
 
 2. Publish it as an onion service. In `torrc`:
 
    ```
-   HiddenServiceDir /var/lib/tor/onionchat/
+   HiddenServiceDir /var/lib/tor/barrow/
    HiddenServicePort 8022 127.0.0.1:8022
    ```
 
    Reload Tor, then read the address:
 
    ```bash
-   sudo cat /var/lib/tor/onionchat/hostname     # -> y782hd7….onion
+   sudo cat /var/lib/tor/barrow/hostname     # -> y782hd7….onion
    ```
 
 Nothing about the server needs a public IP or DNS. Keep `--host 127.0.0.1` so
@@ -72,10 +72,10 @@ python client.py alice@y782hd7….onion
   automatically. Make sure Tor is running locally.
 - `alice` is only your requested nickname on first connect.
 - Key selection: uses `~/.ssh/id_ed25519` if it exists, otherwise generates and
-  reuses `~/.config/onionchat/id_ed25519`. Override with `--key PATH`.
+  reuses `~/.config/barrow/id_ed25519`. Override with `--key PATH`.
   (Encrypted private keys: decrypt a copy first with
   `ssh-keygen -p -f <copy>` and an empty passphrase, or point `--key` at a
-  dedicated unencrypted onionchat key.)
+  dedicated unencrypted barrow key.)
 
 Commands once connected: `/who`, `/nick NAME`, `/fp`, `/verify NAME`,
 `/history [N]`, `/quit`. Anything else you type is encrypted to every current
