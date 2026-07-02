@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-onionchat server.
+barrow server.
 
 An SSH server (asyncssh) that relays end-to-end-encrypted chat. It never holds
 any user's private key, so it physically cannot read message contents. It
@@ -33,8 +33,8 @@ from protocol import (  # noqa: E402
     b64e, PROTOCOL_VERSION,
 )
 
-DB_PATH = os.environ.get("ONIONCHAT_DB", "onionchat.db")
-HOSTKEY_PATH = os.environ.get("ONIONCHAT_HOSTKEY", "ssh_host_ed25519_key")
+DB_PATH = os.environ.get("BARROW_DB", "barrow.db")
+HOSTKEY_PATH = os.environ.get("BARROW_HOSTKEY", "ssh_host_ed25519_key")
 HISTORY_LIMIT = 500          # max messages returned to a client
 STORE_CAP = 20000            # total messages kept in the DB (oldest pruned)
 MAX_LINE = 1 << 20           # 1 MiB per frame, rejects abuse
@@ -224,7 +224,7 @@ async def handle_session(process: asyncssh.SSHServerProcess):
         "nick": nick,
         "fingerprint": fingerprint(vk_bytes),
         "note": "E2EE room. Messages must be encrypted envelopes. Use the "
-                "onionchat client; plaintext is rejected.",
+                "barrow client; plaintext is rejected.",
     }))
 
     try:
@@ -278,8 +278,8 @@ async def _dispatch(process, uid, vk_bytes, nick, line):
         process.stdout.write(encode_frame({
             "event": "error",
             "error": "not_a_client",
-            "detail": "This room speaks the onionchat JSON protocol. "
-                      "Connect with the onionchat client.",
+            "detail": "This room speaks the barrow JSON protocol. "
+                      "Connect with the barrow client.",
         }))
         return
 
@@ -361,9 +361,9 @@ async def start(host, port):
         server_host_keys=[HOSTKEY_PATH],
         process_factory=handle_session,
         # accept any username; auth is purely by key
-        server_version="SSH-2.0-onionchat",
+        server_version="SSH-2.0-barrow",
     )
-    print(f"onionchat server listening on {host}:{port}")
+    print(f"barrow server listening on {host}:{port}")
     print(f"host key fingerprint: "
           f"{asyncssh.read_private_key(HOSTKEY_PATH).get_fingerprint()}")
     await server.wait_closed()
@@ -371,7 +371,7 @@ async def start(host, port):
 
 def main():
     global STORE
-    ap = argparse.ArgumentParser(description="onionchat E2EE SSH server")
+    ap = argparse.ArgumentParser(description="barrow E2EE SSH server")
     ap.add_argument("--host", default="127.0.0.1",
                     help="bind address (keep 127.0.0.1; Tor connects locally)")
     ap.add_argument("--port", type=int, default=8022)

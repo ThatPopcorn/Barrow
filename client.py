@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-onionchat client -- the minimal reference client.
+barrow client -- the minimal reference client.
 
 Usage:
     python client.py NICK@HOST[:PORT] [--key PATH] [--no-tor]
@@ -9,7 +9,7 @@ Usage:
   automatically. NICK is only a *requested* nickname on first connect.
 
 Identity: a single ed25519 key. By default it uses ~/.ssh/id_ed25519 if present,
-otherwise it generates one at ~/.config/onionchat/id_ed25519. The same key is
+otherwise it generates one at ~/.config/barrow/id_ed25519. The same key is
 your SSH auth, your signature, and (converted to curve25519) your decryption key.
 
 This client is deliberately small so you can read it, trust it, or fork it.
@@ -33,7 +33,7 @@ from protocol import (  # noqa: E402
 from nacl.signing import SigningKey  # noqa: E402
 
 DEFAULT_KEY = os.path.expanduser("~/.ssh/id_ed25519")
-FALLBACK_KEY = os.path.expanduser("~/.config/onionchat/id_ed25519")
+FALLBACK_KEY = os.path.expanduser("~/.config/barrow/id_ed25519")
 TOR_SOCKS = ("127.0.0.1", 9050)
 
 
@@ -309,7 +309,7 @@ def parse_target(target):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="onionchat minimal E2EE client")
+    ap = argparse.ArgumentParser(description="barrow minimal E2EE client")
     ap.add_argument("target", help="NICK@HOST[:PORT] (HOST may be an .onion)")
     ap.add_argument("--key", default=DEFAULT_KEY, help="ed25519 private key path")
     ap.add_argument("--no-tor", action="store_true",

@@ -1,4 +1,4 @@
-# onionchat protocol v1
+# barrow protocol v1
 
 A minimal, honest spec. If your client speaks this, it works with the server.
 Reference implementation: `protocol.py` (~200 lines). Port it or trim it.

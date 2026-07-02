@@ -1,5 +1,5 @@
 """
-onionchat protocol / crypto core.
+barrow protocol / crypto core.
 
 This module is the entire "protocol". A client is anything that speaks the
 newline-delimited JSON frames documented in PROTOCOL.md and produces envelopes
