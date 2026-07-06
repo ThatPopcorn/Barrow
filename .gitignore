@@ -1,6 +1,0 @@
-.venv
-onionchat.db
-onionchat.db-shm
-onionchat.db-wal
-ssh_host_ed25519_key
-__pycache__
